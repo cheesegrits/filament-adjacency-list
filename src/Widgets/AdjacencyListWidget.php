@@ -2,7 +2,6 @@
 
 namespace Saade\FilamentAdjacencyList\Widgets;
 
-use App\Models\Agencies\Agency;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -53,62 +52,62 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->relationship('descendants')
                             ->pivotAttributes(['agency_tree_type_id' => 1])
                             ->labelKey('name')
-Testing                            ->customPath('tree_path')
+                            ->customPath('tree_path')
                             ->startCollapsed(true)
                             ->addable(false)
                             ->editable(false)
                             ->deletable(false)
                             ->reorderable(false),
                     ])
-                    ->columns(1)
+                    ->columns(1),
 
             ])
             ->statePath('data')
             ->model($this->model);
     }
 
-//    protected function getData(): array
-//    {
-//        return $this->getStateFromRelatedRecords(
-//            collect()
-//        );
-//    }
+    //    protected function getData(): array
+    //    {
+    //        return $this->getStateFromRelatedRecords(
+    //            collect()
+    //        );
+    //    }
 
     /**
      * @return array<array<string, mixed>>
      */
-//    protected function getStateFromRelatedRecords(Collection $records): array
-//    {
-//        if (! $records->count()) {
-//            return [];
-//        }
-//
-//        $state = [];
-//
-//        $path = $this->getPath();
-//        //        $translatableContentDriver = $this->getLivewire()->makeFilamentTranslatableContentDriver();
-//
-//        $records
-//            ->each(
-//                function (Model $record) use (&$state, $path): void {
-//                    $data = $record->attributesToArray();
-//
-//                    //                    $data = $this->mutateRelationshipDataBeforeFill($data);
-//
-//                    // Depending on the records order, a children can be created before its parent.
-//                    // In this case, we need to merge the children with the parent data.
-//                    $key = $record->{$path};
-//
-//                    if ($existing = data_get($state, $key)) {
-//                        data_set($state, $key, array_merge($existing, $data));
-//                    } else {
-//                        data_set($state, $key, $data);
-//                    }
-//                }
-//            );
-//
-//        return $state;
-//    }
+    //    protected function getStateFromRelatedRecords(Collection $records): array
+    //    {
+    //        if (! $records->count()) {
+    //            return [];
+    //        }
+    //
+    //        $state = [];
+    //
+    //        $path = $this->getPath();
+    //        //        $translatableContentDriver = $this->getLivewire()->makeFilamentTranslatableContentDriver();
+    //
+    //        $records
+    //            ->each(
+    //                function (Model $record) use (&$state, $path): void {
+    //                    $data = $record->attributesToArray();
+    //
+    //                    //                    $data = $this->mutateRelationshipDataBeforeFill($data);
+    //
+    //                    // Depending on the records order, a children can be created before its parent.
+    //                    // In this case, we need to merge the children with the parent data.
+    //                    $key = $record->{$path};
+    //
+    //                    if ($existing = data_get($state, $key)) {
+    //                        data_set($state, $key, array_merge($existing, $data));
+    //                    } else {
+    //                        data_set($state, $key, $data);
+    //                    }
+    //                }
+    //            );
+    //
+    //        return $state;
+    //    }
 
     public function getCollapsible(): bool
     {
