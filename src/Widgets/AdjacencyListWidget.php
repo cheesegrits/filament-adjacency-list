@@ -53,7 +53,12 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->relationship('descendants')
                             ->pivotAttributes(['agency_tree_type_id' => 1])
                             ->labelKey('name')
-                            ->customPath('tree_path'),
+Testing                            ->customPath('tree_path')
+                            ->startCollapsed(true)
+                            ->addable(false)
+                            ->editable(false)
+                            ->deletable(false)
+                            ->reorderable(false),
                     ])
                     ->columns(1)
 
