@@ -1,16 +1,17 @@
 import Sortable from "sortablejs"
 
-export default ({
+export default function FilamentAdjacencyList({
     treeId,
     statePath,
     disabled,
     maxDepth
-}) => ({
+}) {
+    return {
     statePath,
     sortable: null,
     maxDepth,
 
-    init() {
+    init: function() {
         this.sortable = new Sortable(this.$el, {
             disabled,
             group: treeId,
@@ -30,11 +31,11 @@ export default ({
         })
     },
 
-    getDepth(el, depth = 0) {
+    getDepth: function(el, depth = 0) {
         let parentEl = el.parentElement.closest('[data-sortable-item]');
         if (parentEl) {
             return this.getDepth(parentEl, ++depth);
         }
         return depth;
     },
-})
+}}
