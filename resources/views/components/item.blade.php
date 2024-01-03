@@ -89,7 +89,7 @@
         <div
             class="space-y-2"
             wire:key="{{ $itemStatePath }}-children"
-            x-data="tree({
+            x-data="FilamentAdjacencyList({
                 treeId: @js($treeId),
                 statePath: @js($itemStatePath . ".$childrenKey"),
                 disabled: @js($disabled),
