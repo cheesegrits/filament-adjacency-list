@@ -24,9 +24,23 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static ?string $icon = 'heroicon-o-list-bullet';
 
-    protected static bool $collapsible = true;
-
     protected static bool $startCollapsed = true;
+
+    protected static string $customPath = 'tree_path';
+
+    protected static string $keyLabel = 'label';
+
+    protected static string $relationshipName = 'descendants';
+
+    protected static bool $editable = false;
+
+    protected static bool $addable = false;
+
+    protected static bool $deletable = false;
+
+    protected static bool $reorderable = false;
+
+    protected static ?array $pivotAttributes = null;
 
     public function mount(): void
     {
@@ -49,69 +63,22 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                 Group::make()
                     ->schema([
                         AdjacencyList::make('kiddies')
-                            ->relationship('descendants')
-                            ->pivotAttributes(['agency_tree_type_id' => 1])
-                            ->labelKey('name')
-                            ->customPath('tree_path')
-                            ->startCollapsed(true)
-                            ->addable(false)
-                            ->editable(false)
-                            ->deletable(false)
-                            ->reorderable(false),
+                            ->relationship($this->getRelationshipName())
+                            ->pivotAttributes($this->getPivotAttributes())
+                            ->labelKey($this->getLabelKey())
+                            ->customPath($this->getCustomPath())
+                            ->startCollapsed($this->getStartCollapsed())
+                            ->addable($this->getAddable())
+                            ->editable($this->getEditable())
+                            ->deletable($this->getDeletable())
+                            ->reorderable($this->getReorderable())
+                            ->form($this->getFormSchema()),
                     ])
                     ->columns(1),
 
             ])
             ->statePath('data')
             ->model($this->model);
-    }
-
-    //    protected function getData(): array
-    //    {
-    //        return $this->getStateFromRelatedRecords(
-    //            collect()
-    //        );
-    //    }
-
-    /**
-     * @return array<array<string, mixed>>
-     */
-    //    protected function getStateFromRelatedRecords(Collection $records): array
-    //    {
-    //        if (! $records->count()) {
-    //            return [];
-    //        }
-    //
-    //        $state = [];
-    //
-    //        $path = $this->getPath();
-    //        //        $translatableContentDriver = $this->getLivewire()->makeFilamentTranslatableContentDriver();
-    //
-    //        $records
-    //            ->each(
-    //                function (Model $record) use (&$state, $path): void {
-    //                    $data = $record->attributesToArray();
-    //
-    //                    //                    $data = $this->mutateRelationshipDataBeforeFill($data);
-    //
-    //                    // Depending on the records order, a children can be created before its parent.
-    //                    // In this case, we need to merge the children with the parent data.
-    //                    $key = $record->{$path};
-    //
-    //                    if ($existing = data_get($state, $key)) {
-    //                        data_set($state, $key, array_merge($existing, $data));
-    //                    } else {
-    //                        data_set($state, $key, $data);
-    //                    }
-    //                }
-    //            );
-    //
-    //        return $state;
-    //    }
-
-    public function getCollapsible(): bool
-    {
-        return static::$collapsible;
     }
 
     public function getStartCollapsed(): bool
@@ -127,5 +94,50 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected function getIcon(): ?string
     {
         return static::$icon;
+    }
+
+    protected function getRelationshipName(): string
+    {
+        return static::$relationshipName;
+    }
+
+    protected function getPivotAttributes(): ?array
+    {
+        return static::$pivotAttributes;
+    }
+
+    protected function getLabelKey(): string
+    {
+        return static::$keyLabel;
+    }
+
+    protected function getCustomPath(): string
+    {
+        return static::$customPath;
+    }
+
+    protected function getEditable(): bool
+    {
+        return static::$editable;
+    }
+
+    protected function getAddable(): bool
+    {
+        return static::$addable;
+    }
+
+    protected function getDeletable(): bool
+    {
+        return static::$deletable;
+    }
+
+    protected function getReorderable(): bool
+    {
+        return static::$reorderable;
+    }
+
+    protected function getFormSchema(): ?array
+    {
+        return null;
     }
 }
