@@ -2,6 +2,7 @@
 
 namespace Saade\FilamentAdjacencyList\Widgets;
 
+use Closure;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -42,6 +43,8 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static ?array $pivotAttributes = null;
 
+    protected static ?Closure $mutateRelationshipDataBeforeFill = null;
+
     public function mount(): void
     {
         $this->model = $this->getModel();
@@ -63,6 +66,7 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                 Group::make()
                     ->schema([
                         AdjacencyList::make('kiddies')
+                            ->mutateRelationshipDataBeforeFillUsing($this->getMutateRelationshipDataBeforeFillUsing())
                             ->relationship($this->getRelationshipName())
                             ->pivotAttributes($this->getPivotAttributes())
                             ->labelKey($this->getLabelKey())
@@ -139,5 +143,10 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected function getFormSchema(): ?array
     {
         return null;
+    }
+
+    protected function getMutateRelationshipDataBeforeFillUsing(): ?Closure
+    {
+        return static::$mutateRelationshipDataBeforeFill;
     }
 }
