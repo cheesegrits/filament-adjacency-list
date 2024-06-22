@@ -2,17 +2,12 @@
 
 namespace Saade\FilamentAdjacencyList\Forms\Components\Actions;
 
-use Filament\Actions\Concerns\InteractsWithRecord;
-use Filament\Actions\Contracts\HasRecord;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Support\Enums\ActionSize;
-use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
+use Saade\FilamentAdjacencyList\Forms\Components\Component;
 
-class EditAction extends Action implements HasRecord
+class EditAction extends Action
 {
-    use InteractsWithRecord;
-
     public static function getDefaultName(): ?string
     {
         return 'edit';
@@ -22,16 +17,40 @@ class EditAction extends Action implements HasRecord
     {
         parent::setUp();
 
+        $this->label(fn (): string => __('filament-adjacency-list::adjacency-list.actions.edit.label'));
+
         $this->iconButton()->icon('heroicon-o-pencil-square')->color('gray');
 
-        $this->label(fn (): string => __('filament-adjacency-list::adjacency-list.actions.edit.label'));
+        $this->size(ActionSize::ExtraSmall);
 
         $this->modalHeading(fn (): string => __('filament-adjacency-list::adjacency-list.actions.edit.modal.heading'));
 
         $this->modalSubmitActionLabel(fn (): string => __('filament-adjacency-list::adjacency-list.actions.edit.modal.actions.save'));
 
-        $this->action(
-            function (AdjacencyList $component, array $arguments, array $data): void {
+        $this->form(
+            function (Component $component, Form $form, array $arguments): Form {
+                $form = $component
+                    ->getForm($form)
+                    ->statePath($arguments['statePath']);
+
+                if ($component->getRelatedModel()) {
+                    $form->model($component->getCachedExistingRecords()->get($arguments['cachedRecordKey']));
+                }
+
+                return $form;
+            }
+        );
+
+        $this->fillForm(
+            function (Component $component, array $arguments): array {
+                return data_get($component->getState(), $component->getRelativeStatePath($arguments['statePath']), []);
+            }
+        );
+
+        $this->action(function (Component $component, array $arguments): void {
+            $record = $component->getRelatedModel() ? $component->getCachedExistingRecords()->get($arguments['cachedRecordKey']) : null;
+
+            $this->process(function (Component $component, array $arguments, array $data): void {
                 $statePath = $component->getRelativeStatePath($arguments['statePath']);
                 $state = $component->getState();
 
@@ -40,55 +59,13 @@ class EditAction extends Action implements HasRecord
                 data_set($state, $statePath, $item);
 
                 $component->state($state);
-            }
-        );
-
-        $this->size(ActionSize::Small);
-
-        $this->form(
-            fn (AdjacencyList $component, Form $form) => $component->getForm($form)
-        );
-
-        $this->fillForm(
-            function (AdjacencyList $component, array $arguments) {
-                return data_get($component->getState(), $component->getRelativeStatePath($arguments['statePath']), []);
-            }
-        );
-
-        $this->record(
-            fn (AdjacencyList $component, array $arguments) => $component->getCachedExistingRecords()->firstWhere($component->getPath(), $component->getRelativeStatePath($arguments['statePath']))
-        );
+            }, ['record' => $record]);
+        });
 
         $this->visible(
-            fn (AdjacencyList $component): bool => $component->isEditable()
+            function (Component $component): bool {
+                return $component->isEditable();
+            }
         );
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    protected function resolveDefaultClosureDependencyForEvaluationByName(string $parameterName): array
-    {
-        return match ($parameterName) {
-            'record' => [$this->getRecord()],
-            default => parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName),
-        };
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    protected function resolveDefaultClosureDependencyForEvaluationByType(string $parameterType): array
-    {
-        $record = $this->getRecord();
-
-        if (! $record) {
-            return parent::resolveDefaultClosureDependencyForEvaluationByType($parameterType);
-        }
-
-        return match ($parameterType) {
-            Model::class, $record::class => [$record],
-            default => parent::resolveDefaultClosureDependencyForEvaluationByType($parameterType),
-        };
     }
 }
