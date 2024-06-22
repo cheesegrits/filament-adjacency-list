@@ -11,6 +11,7 @@ use Illuminate\Support\Arr;
 use Saade\FilamentAdjacencyList\Forms\Components\Actions\Action;
 use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
 use Saade\FilamentAdjacencyList\Forms\Components\Component;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasGraphRelationships;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 trait HasRelationship
@@ -298,8 +299,9 @@ trait HasRelationship
         }
 
         if ($model = $this->getModelInstance()) {
-            if (! in_array(HasRecursiveRelationships::class, class_uses($model))) {
-                throw new \Exception('The model ' . $model::class . ' must use the ' . HasRecursiveRelationships::class . ' trait.');
+            if (! in_array(HasRecursiveRelationships::class, class_uses($model))
+            && ! in_array(HasGraphRelationships::class, class_uses($model))) {
+                throw new \Exception('The model ' . $model::class . ' must use either the ' . HasRecursiveRelationships::class . ' or ' . HasGraphRelationships::class . ' trait.');
             }
         }
 
