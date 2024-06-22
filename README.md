@@ -49,12 +49,6 @@ AdjacencyList::make('subjects')
     ->maxDepth(2)               // defaults to -1 (unlimited depth)
 ```
 
-### Customizing the `MaxDepth` of the tree.
-```php
-AdjacencyList::make('subjects')
-    ->maxDepth(2)               // defaults to -1 (unlimited depth)
-```
-
 ### Creating items without a modal.
 ```php
 AdjacencyList::make('subjects')
@@ -81,6 +75,13 @@ AdjacencyList::make('subjects')
     ->deleteAction(fn (Action $action): Action => $action->requiresConfirmation())
     ->reorderAction(fn (Action $action): Action => $action->icon('heroicon-o-arrow-path-rounded-square'))
 ```
+
+> [!IMPORTANT]
+> **Reorder Action**
+> 
+> If you want to add `->extraAttributes()` to the action, you need to add the `'data-sortable-handle' => 'true'` to the array, as the action serves as a handle for SortableJS.
+> 
+> By default, clicking on the action will do anything. If you want to trigger some action on click, you need to chain `->livewireClickHandlerEnabled()` on the action.
 
 ## Relationships
 In this example, we'll be creating a Ticketing system, where tickets can be assigned to a department, and departments have subjects.
@@ -214,7 +215,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Saade](https://github.com/saade)
-- [Ryan Chandler's Navigation Plugin](https://github.com/ryangjchandler/filament-navigation) for the inspiration.
+- [Ryan Chandler's Navigation Plugin](https://github.com/ryangjchandler/filament-navigation) for his work on the tree UI and complex tree actions.
+- [Hugh](https://github.com/cheesegrits) for his help on supporting trees/ graphs relationships.
 - [All Contributors](../../contributors)
 
 ## License
