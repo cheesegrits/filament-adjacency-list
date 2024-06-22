@@ -27,7 +27,7 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static bool $startCollapsed = true;
 
-    protected static string $customPath = 'tree_path';
+    //    protected static string $customPath = 'tree_path';
 
     protected static string $keyLabel = 'label';
 
@@ -70,8 +70,8 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->relationship($this->getRelationshipName())
                             ->pivotAttributes($this->getPivotAttributes())
                             ->labelKey($this->getLabelKey())
-                            ->customPath($this->getCustomPath())
-                            ->startCollapsed($this->getStartCollapsed())
+//                            ->customPath($this->getCustomPath())
+                            ->collapsed($this->getStartCollapsed())
                             ->addable($this->getAddable())
                             ->editable($this->getEditable())
                             ->deletable($this->getDeletable())
@@ -115,10 +115,10 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
         return static::$keyLabel;
     }
 
-    protected function getCustomPath(): string
-    {
-        return static::$customPath;
-    }
+    //    protected function getCustomPath(): string
+    //    {
+    //        return static::$customPath;
+    //    }
 
     protected function getEditable(): bool
     {
