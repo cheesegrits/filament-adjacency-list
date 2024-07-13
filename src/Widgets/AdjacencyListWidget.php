@@ -23,6 +23,10 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static ?string $heading = null;
 
+    protected static ?string $label = null;
+
+    protected static ?string $fieldName = 'children';
+
     protected static ?string $icon = 'heroicon-o-list-bullet';
 
     protected static bool $startCollapsed = true;
@@ -45,6 +49,8 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static ?Closure $mutateRelationshipDataBeforeFill = null;
 
+    protected static ?Closure $modifyRelationshipQueryUsing = null;
+
     public function mount(): void
     {
         $this->model = $this->getModel();
@@ -65,12 +71,12 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
             ->schema([
                 Group::make()
                     ->schema([
-                        AdjacencyList::make('kiddies')
+                        AdjacencyList::make($this->getFieldName())
+                            ->label($this->getLabel())
                             ->mutateRelationshipDataBeforeFillUsing($this->getMutateRelationshipDataBeforeFillUsing())
-                            ->relationship($this->getRelationshipName())
+                            ->relationship($this->getRelationshipName(), $this->getModifyRelationshipQueryUsing())
                             ->pivotAttributes($this->getPivotAttributes())
                             ->labelKey($this->getLabelKey())
-//                            ->customPath($this->getCustomPath())
                             ->collapsed($this->getStartCollapsed())
                             ->addable($this->getAddable())
                             ->editable($this->getEditable())
@@ -83,6 +89,16 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
             ])
             ->statePath('data')
             ->model($this->model);
+    }
+
+    public function getFieldName(): string
+    {
+        return static::$fieldName;
+    }
+
+    public function getLabel(): ?string
+    {
+        return static::$label;
     }
 
     public function getStartCollapsed(): bool
@@ -103,6 +119,11 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected function getRelationshipName(): string
     {
         return static::$relationshipName;
+    }
+
+    protected function getModifyRelationshipQueryUsing(): ?Closure
+    {
+        return static::$modifyRelationshipQueryUsing;
     }
 
     protected function getPivotAttributes(): ?array
