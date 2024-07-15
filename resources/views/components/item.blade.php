@@ -89,7 +89,7 @@
             'pb-1' => !$hasChildren,
             'border-l border-l-gray-100 dark:border-l-white/10 ps-5 pt-2' => $hasRulers,
         ])
-        x-data="adjacencyList({
+        x-data="filamentAdjacencyList({
             treeId: @js($treeId),
             statePath: @js($itemStatePath . ".$childrenKey"),
             disabled: @js($disabled),

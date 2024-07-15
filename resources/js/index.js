@@ -1,6 +1,6 @@
 import Sortable from "sortablejs"
 
-export default function adjacencyList({
+export default function filamentAdjacencyList({
     treeId,
     statePath,
     disabled,
