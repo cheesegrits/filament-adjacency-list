@@ -35,7 +35,15 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static string $keyLabel = 'label';
 
+    protected static string $childrenKey = 'children';
+
     protected static string $relationshipName = 'descendants';
+
+    protected static ?int $maxDepth = null;
+
+    protected static bool $hasRulers = false;
+
+    protected static bool $hasModal = true;
 
     protected static bool $editable = false;
 
@@ -44,6 +52,10 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected static bool $deletable = false;
 
     protected static bool $reorderable = false;
+
+    protected static bool $indentable = false;
+
+    protected static bool $moveable = false;
 
     protected static ?array $pivotAttributes = null;
 
@@ -77,11 +89,26 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->relationship($this->getRelationshipName(), $this->getModifyRelationshipQueryUsing())
                             ->pivotAttributes($this->getPivotAttributes())
                             ->labelKey($this->getLabelKey())
+                            ->childrenKey($this->getChildrenKey())
+                            ->maxDepth($this->getMaxDepth())
+                            ->hasRulers($this->getHasRulers())
                             ->collapsed($this->getStartCollapsed())
+                            ->modal($this->getHasModal())
                             ->addable($this->getAddable())
                             ->editable($this->getEditable())
                             ->deletable($this->getDeletable())
                             ->reorderable($this->getReorderable())
+                            ->indentable($this->getIndentable())
+                            ->moveable($this->getMoveable())
+                            ->editAction($this->getEditAction())
+                            ->addAction($this->getAddAction())
+                            ->addChildAction($this->getAddChildAction())
+                            ->deleteAction($this->getDeleteAction())
+                            ->reorderAction($this->getReorderAction())
+                            ->indentAction($this->getIndentAction())
+                            ->dedentAction($this->getDedentAction())
+                            ->moveUpAction($this->getMoveUpAction())
+                            ->moveDownAction($this->getMoveDownAction())
                             ->form($this->getFormSchema()),
                     ])
                     ->columns(1),
@@ -116,6 +143,16 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
         return static::$icon;
     }
 
+    protected function getHasModal(): bool
+    {
+        return static::$hasModal;
+    }
+
+    protected function getMaxDepth(): ?int
+    {
+        return static::$maxDepth;
+    }
+
     protected function getRelationshipName(): string
     {
         return static::$relationshipName;
@@ -134,6 +171,16 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected function getLabelKey(): string
     {
         return static::$keyLabel;
+    }
+
+    protected function getChildrenKey(): string
+    {
+        return static::$childrenKey;
+    }
+
+    protected function getHasRulers(): bool
+    {
+        return static::$hasRulers;
     }
 
     //    protected function getCustomPath(): string
@@ -161,6 +208,16 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
         return static::$reorderable;
     }
 
+    protected function getIndentable(): bool
+    {
+        return static::$indentable;
+    }
+
+    protected function getMoveable(): bool
+    {
+        return static::$moveable;
+    }
+
     protected function getFormSchema(): ?array
     {
         return null;
@@ -169,5 +226,50 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected function getMutateRelationshipDataBeforeFillUsing(): ?Closure
     {
         return static::$mutateRelationshipDataBeforeFill;
+    }
+
+    protected function getEditAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getAddAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getAddChildAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getDeleteAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getReorderAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getIndentAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getDedentAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getMoveUpAction(): ?Closure
+    {
+        return null;
+    }
+
+    protected function getMoveDownAction(): ?Closure
+    {
+        return null;
     }
 }
