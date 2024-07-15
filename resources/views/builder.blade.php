@@ -31,6 +31,7 @@
     @endphp
 
     <div
+        x-ignore
         class="fi-adjacency-list-tree"
         data-sortable-container
         ax-load
