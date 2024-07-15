@@ -93,7 +93,7 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->labelKey($this->getLabelKey())
                             ->childrenKey($this->getChildrenKey())
                             ->maxDepth($this->getMaxDepth())
-                            ->hasRulers($this->getHasRulers())
+                            ->rulers($this->getHasRulers())
                             ->collapsed($this->getStartCollapsed())
                             ->modal($this->getHasModal())
                             ->addable($this->getAddable())
