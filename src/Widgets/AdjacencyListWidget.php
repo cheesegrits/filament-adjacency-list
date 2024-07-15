@@ -31,6 +31,8 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static bool $startCollapsed = true;
 
+    protected static bool $collapsible = true;
+
     //    protected static string $customPath = 'tree_path';
 
     protected static string $keyLabel = 'label';
@@ -95,6 +97,7 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->maxDepth($this->getMaxDepth())
                             ->rulers($this->getHasRulers())
                             ->collapsed($this->getStartCollapsed())
+                            ->collapsible($this->getCollapsible())
                             ->modal($this->getHasModal())
                             ->addable($this->getAddable())
                             ->editable($this->getEditable())
@@ -134,6 +137,11 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     public function getStartCollapsed(): bool
     {
         return static::$startCollapsed;
+    }
+
+    public function getCollapsible(): bool
+    {
+        return static::$collapsible;
     }
 
     protected function getHeading(): ?string
