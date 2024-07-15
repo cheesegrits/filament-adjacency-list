@@ -201,6 +201,29 @@ AdjacencyList::make('subdepartments')
     ->orderColumn('sort')   // or any other column
 ```
 
+## Widget
+
+The `AdjacencyListWidget` can be used to render a tree for any model with a recursive child relationship (including many-to-many graph relationships,
+using Staudenmeir's HasGraphRelationships trait).
+
+The simplest use case is ...
+
+```php
+class DepartmentTreeWidget extends AdjacencyListWidget
+{
+    public ?Model $record = null;
+    
+    protected static string $relationshipName = 'descendantsAndSelf';
+
+    public function getModel(): ?Model
+    {
+        $this->model = $this->record ?? Department::query()->where(['is_root' => true])->first();
+
+        return $this->model;
+    }
+}
+
+```
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
