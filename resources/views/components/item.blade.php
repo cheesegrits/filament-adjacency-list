@@ -48,7 +48,7 @@
                     'px-4' => !$isCollapsible || !$hasChildren,
                     'cursor-default' => $disabled || !$editable,
                 ])
-                @if ($editable)
+                @if ($editable && $isClickable)
                 wire:click="mountFormComponentAction(@js($statePath), 'edit', @js($mountArgs))"
                 @endif>
                 <span>{{ $item[$labelKey] }}</span>
