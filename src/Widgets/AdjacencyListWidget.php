@@ -57,6 +57,8 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
 
     protected static bool $moveable = false;
 
+    protected static bool $clickable = true;
+
     protected static ?array $pivotAttributes = null;
 
     protected static ?Closure $mutateRelationshipDataBeforeFill = null;
@@ -96,6 +98,7 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
                             ->modal($this->getHasModal())
                             ->addable($this->getAddable())
                             ->editable($this->getEditable())
+                            ->clickable($this->getClickable())
                             ->deletable($this->getDeletable())
                             ->reorderable($this->getReorderable())
                             ->indentable($this->getIndentable())
@@ -191,6 +194,11 @@ class AdjacencyListWidget extends Widgets\Widget implements HasForms
     protected function getEditable(): bool
     {
         return static::$editable;
+    }
+
+    protected function getClickable(): bool
+    {
+        return static::$clickable;
     }
 
     protected function getAddable(): bool

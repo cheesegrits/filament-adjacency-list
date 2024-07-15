@@ -1,4 +1,4 @@
-@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'hasRulers', 'indentable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'statePath', 'treeId', 'uuid'])
+@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'hasRulers', 'indentable', 'isClickable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'statePath', 'treeId', 'uuid'])
 
 <div
     wire:key="{{ $itemStatePath }}"
@@ -117,6 +117,7 @@
                 :is-collapsible="$isCollapsible"
                 :is-indentable="$isIndentable"
                 :is-moveable="$isMoveable"
+                :is-clickable="$isClickable"
                 :item="$child"
                 :item-state-path="$itemStatePath . '.' . $childrenKey . '.' . $uuid"
                 :label-key="$labelKey"

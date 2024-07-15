@@ -22,6 +22,7 @@
         $isIndentable = $isIndentable();
         $isMoveable = $isMoveable();
         $isReorderable = $isReorderable();
+        $isClickable = $isClickable();
 
         $maxDepth = $getMaxDepth();
 
@@ -60,6 +61,7 @@
                 :is-collapsible="$isCollapsible"
                 :is-indentable="$isIndentable"
                 :is-moveable="$isMoveable"
+                :is-clickable="$isClickable"
                 :item="$item"
                 :item-state-path="$getStatePath() . '.' . $uuid"
                 :label-key="$getLabelKey()"
