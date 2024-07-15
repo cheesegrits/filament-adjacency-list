@@ -74,6 +74,9 @@
             @if ($deletable)
                 {{ $deleteAction($mountArgs) }}
             @endif
+            @if ($editable)
+                {{ $editAction($mountArgs) }}
+            @endif
         </div>
     </div>
 
