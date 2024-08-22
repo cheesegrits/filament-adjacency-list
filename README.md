@@ -17,6 +17,25 @@ You can install the package via composer:
 composer require saade/filament-adjacency-list
 ```
 
+> [!IMPORTANT]
+> In an effort to align with Filament's theming methodology you will need to use a custom theme to use this plugin.
+>>  If you have not set up a custom theme and are using a Panel follow the instructions in the Filament Docs first. The following applies to both the Panels Package and the standalone Forms package.
+
+1. Add the plugin's views to your `tailwind.config.js` file.
+
+```js
+content: [
+    ...
+    '<path-to-vendor>/saade/filament-adjacency-list/resources/**/*.blade.php',
+]
+```
+
+2. Rebuild your custom theme.
+
+```sh
+npm run build
+```
+
 ## Usage
 
 ```php
@@ -203,8 +222,7 @@ AdjacencyList::make('subdepartments')
 
 ## Widget
 
-The `AdjacencyListWidget` can be used to render a tree for any model with a recursive child relationship (including many-to-many graph relationships,
-using Staudenmeir's HasGraphRelationships trait).
+The `AdjacencyListWidget` can be used to render a tree for any model with a recursive child relationship (including many-to-many graph relationships, using Staudenmeir's HasGraphRelationships trait).
 
 The simplest use case is ...
 

@@ -35,7 +35,6 @@
         class="fi-adjacency-list-tree"
         data-sortable-container
         ax-load
-        ax-load-css="{{ \Filament\Support\Facades\FilamentAsset::getStyleHref('filament-adjacency-list-styles', 'saade/filament-adjacency-list') }}"
         ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-adjacency-list', 'saade/filament-adjacency-list') }}"
         x-data="filamentAdjacencyList({
             treeId: @js($treeId),
