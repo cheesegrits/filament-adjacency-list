@@ -2,7 +2,6 @@
 
 namespace Saade\FilamentAdjacencyList\Forms\Components;
 
-use Closure;
 use Filament\Forms;
 use Illuminate\Support\Str;
 use Saade\FilamentAdjacencyList\Forms\Components\Actions\Action;
@@ -11,17 +10,13 @@ abstract class Component extends Forms\Components\Field
 {
     use Concerns\HasActions;
     use Concerns\HasForm;
-    use Forms\Components\Concerns\CanBeCollapsed;
+    use Concerns\CanBeCollapsed;
+    use Concerns\HasRulers;
+    use Concerns\HasMaxDepth;
+    use Concerns\HasLabelKey;
+    use Concerns\HasChildrenKey;
 
     protected string $view = 'filament-adjacency-list::builder';
-
-    protected string | Closure $labelKey = 'label';
-
-    protected string | Closure $childrenKey = 'children';
-
-    protected int | Closure | null $maxDepth = null;
-
-    protected bool | Closure $hasRulers = false;
 
     protected function setUp(): void
     {
@@ -58,6 +53,7 @@ abstract class Component extends Forms\Components\Field
                     $relativeStatePath = $component->getRelativeStatePath($targetStatePath);
 
                     $items = [];
+
                     foreach ($targetItemsStatePaths as $targetItemStatePath) {
                         $targetItemRelativeStatePath = $component->getRelativeStatePath($targetItemStatePath);
 
@@ -77,54 +73,6 @@ abstract class Component extends Forms\Components\Field
                 },
             ],
         ]);
-    }
-
-    public function labelKey(string | Closure $key): static
-    {
-        $this->labelKey = $key;
-
-        return $this;
-    }
-
-    public function getLabelKey(): string
-    {
-        return $this->evaluate($this->labelKey);
-    }
-
-    public function childrenKey(string | Closure $key): static
-    {
-        $this->childrenKey = $key;
-
-        return $this;
-    }
-
-    public function getChildrenKey(): string
-    {
-        return $this->evaluate($this->childrenKey);
-    }
-
-    public function maxDepth(int | Closure | null $maxDepth): static
-    {
-        $this->maxDepth = $maxDepth;
-
-        return $this;
-    }
-
-    public function getMaxDepth(): ?int
-    {
-        return $this->evaluate($this->maxDepth);
-    }
-
-    public function rulers(bool | Closure $condition = true): static
-    {
-        $this->hasRulers = $condition;
-
-        return $this;
-    }
-
-    public function hasRulers(): bool
-    {
-        return $this->evaluate($this->hasRulers);
     }
 
     public function getRelativeStatePath(string $path): string

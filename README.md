@@ -228,16 +228,24 @@ The simplest use case is ...
 
 ```php
 class DepartmentTreeWidget extends AdjacencyListWidget
-{
-    public ?Model $record = null;
-    
+{    
     protected static string $relationshipName = 'descendantsAndSelf';
 
-    public function getModel(): ?Model
+    // If you're using a widget on an Edit or View page, the plugin will automatically set the $record for you.
+    // However, you're free to override this method to customize the record.
+    public function getModel(): Model | string | null
     {
-        $this->model = $this->record ?? Department::query()->where(['is_root' => true])->first();
+        return Department::query()->where(['is_root' => true])->first();
+    }
 
-        return $this->model;
+    // You can configure the widget using the same methods as the form component.
+    protected function adjacencyList(AdjacencyList $adjacencyList): AdjacencyList
+    {
+        return $adjacencyList
+            ->label('Foo')
+            ->editable()
+            ->labelKey('nombre')
+            ->childrenKey('hijos');
     }
 }
 
