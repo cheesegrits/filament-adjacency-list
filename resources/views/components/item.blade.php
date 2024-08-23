@@ -1,4 +1,4 @@
-@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'getItemAction', 'getItemUrl', 'hasRulers', 'indentable', 'isClickable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'shouldOpenItemUrlInNewTab', 'statePath', 'treeId', 'uuid'])
+@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'getItemAction', 'getItemUrl', 'hasRulers', 'indentable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'shouldOpenItemUrlInNewTab', 'statePath', 'treeId', 'uuid'])
 
 <div
     wire:key="{{ $itemStatePath }}"
