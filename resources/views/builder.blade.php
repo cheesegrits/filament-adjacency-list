@@ -22,8 +22,7 @@
         $isIndentable = $isIndentable();
         $isMoveable = $isMoveable();
         $isReorderable = $isReorderable();
-        $isClickable = $isClickable();
-
+        
         $maxDepth = $getMaxDepth();
 
         $addAction = $getAction('add');
@@ -55,18 +54,20 @@
                 :descendable="$isMoveable && !$loop->last"
                 :disabled="$isDisabled"
                 :editable="$isEditable"
+                :get-item-action="$getItemAction"
+                :get-item-url="$getItemUrl"
                 :has-rulers="$hasRulers"
                 :indentable="$isIndentable && (!$loop->first && $loop->count > 1)"
                 :is-collapsed="$isCollapsed"
                 :is-collapsible="$isCollapsible"
                 :is-indentable="$isIndentable"
                 :is-moveable="$isMoveable"
-                :is-clickable="$isClickable"
                 :item="$item"
                 :item-state-path="$getStatePath() . '.' . $uuid"
                 :label-key="$getLabelKey()"
                 :max-depth="$maxDepth"
                 :reorderable="$isReorderable"
+                :should-open-item-url-in-new-tab="$shouldOpenItemUrlInNewTab"
                 :state-path="$getStatePath()"
                 :tree-id="$treeId"
                 :uuid="$uuid"

@@ -15,6 +15,8 @@ abstract class Component extends Forms\Components\Field
     use Concerns\HasMaxDepth;
     use Concerns\HasLabelKey;
     use Concerns\HasChildrenKey;
+    use Concerns\HasItemAction;
+    use Concerns\HasItemUrl;
 
     protected string $view = 'filament-adjacency-list::builder';
 

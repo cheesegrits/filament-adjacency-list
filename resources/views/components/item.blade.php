@@ -1,4 +1,4 @@
-@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'hasRulers', 'indentable', 'isClickable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'statePath', 'treeId', 'uuid'])
+@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'getItemAction', 'getItemUrl', 'hasRulers', 'indentable', 'isClickable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'shouldOpenItemUrlInNewTab', 'statePath', 'treeId', 'uuid'])
 
 <div
     wire:key="{{ $itemStatePath }}"
@@ -14,10 +14,17 @@
 
         $hitDepthLimit = $maxDepth && substr_count($itemStatePath, $childrenKey) >= $maxDepth;
 
-        $mountArgs = [
-            'statePath' => $itemStatePath,
-            'cachedRecordKey' => $uuid,
-        ];
+        $itemAction = $getItemAction($item);
+        $itemUrl = $getItemUrl($item);
+        $openItemUrlInNewTab = $shouldOpenItemUrlInNewTab($item);
+
+        $mountArgs = ['statePath' => $itemStatePath, 'cachedRecordKey' => $uuid];
+
+        $itemClasses = \Illuminate\Support\Arr::toCssClasses([
+            'flex-1 py-2 text-left rtl:text-right appearance-none',
+            'px-4' => !$isCollapsible || !$hasChildren,
+            'cursor-default' => ($itemAction && $itemUrl === null) && $disabled,
+        ])
     @endphp
 
     <div
@@ -40,19 +47,29 @@
                     @svg('heroicon-o-chevron-right', 'w-3.5 h-3.5 transition ease-in-out duration-200 rtl:rotate-180', ['x-bind:class' => "{'ltr:rotate-90 rtl:!rotate-90': !isCollapsed}"])
                 </button>
             @endif
-
-            <button
-                type="button"
-                @class([
-                    'flex-1 py-2 text-left rtl:text-right appearance-none',
-                    'px-4' => !$isCollapsible || !$hasChildren,
-                    'cursor-default' => $disabled || !$editable,
-                ])
-                @if ($editable && $isClickable)
-                wire:click="mountFormComponentAction(@js($statePath), 'edit', @js($mountArgs))"
-                @endif>
-                <span>{{ $item[$labelKey] }}</span>
-            </button>
+                
+            @if($itemUrl && $itemAction === null)
+                <a
+                    class="{{ $itemClasses }}"
+                    {{ \Filament\Support\generate_href_html($itemUrl, $openItemUrlInNewTab) }}
+                >
+                    <span>{{ $item[$labelKey] }}</span>
+                </a>
+            @elseif ($itemAction)
+                <button
+                    type="button"
+                    class="{{ $itemClasses }}"
+                    @if(!$disabled)
+                    wire:click="mountFormComponentAction(@js($statePath), @js($itemAction), @js($mountArgs))"
+                    @endif
+                >
+                    <span>{{ $item[$labelKey] }}</span>
+                </button>
+            @else
+                <div class="{{ $itemClasses }}">
+                    <span>{{ $item[$labelKey] }}</span>
+                </div>
+            @endif
         </div>
 
         <div class="items-center flex-shrink-0 hidden px-2 space-x-2 rtl:space-x-reverse group-hover:flex">
@@ -111,18 +128,20 @@
                 :descendable="$isMoveable && !$loop->last"
                 :disabled="$disabled"
                 :editable="$editable"
+                :get-item-action="$getItemAction"
+                :get-item-url="$getItemUrl"
                 :has-rulers="$hasRulers"
                 :indentable="$isIndentable && (!$loop->first && $loop->count > 1)"
                 :is-collapsed="$isCollapsed"
                 :is-collapsible="$isCollapsible"
                 :is-indentable="$isIndentable"
                 :is-moveable="$isMoveable"
-                :is-clickable="$isClickable"
                 :item="$child"
                 :item-state-path="$itemStatePath . '.' . $childrenKey . '.' . $uuid"
                 :label-key="$labelKey"
                 :max-depth="$maxDepth"
                 :reorderable="$reorderable"
+                :should-open-item-url-in-new-tab="$shouldOpenItemUrlInNewTab"
                 :state-path="$statePath"
                 :tree-id="$treeId"
                 :uuid="$uuid"
