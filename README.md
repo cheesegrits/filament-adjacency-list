@@ -68,10 +68,13 @@ AdjacencyList::make('subjects')
     ->maxDepth(2)               // defaults to -1 (unlimited depth)
 ```
 
-### Customizing the `MaxDepth` of the tree.
+### Triggering an action or opening a URL when clicking on an item.
 ```php
 AdjacencyList::make('subjects')
-    ->maxDepth(2)               // defaults to -1 (unlimited depth)
+    ->itemAction('edit') // or view, delete, moveUp, indent etc ...
+    ->itemUrl(
+        fn (array $item) => YourResource::getUrl('view', ['record' => $item['id']]) // for example
+    )
 ```
 
 ### Creating items without a modal.
