@@ -111,7 +111,7 @@ trait HasRelationship
                 if ($translatableContentDriver = $component->getLivewire()->makeFilamentTranslatableContentDriver()) {
                     $record = $translatableContentDriver->makeRecord($model, $data);
                 } else {
-                    $record = new $model();
+                    $record = new $model;
                     $record->fill($data);
                 }
 
@@ -154,7 +154,7 @@ trait HasRelationship
                 if ($translatableContentDriver = $component->getLivewire()->makeFilamentTranslatableContentDriver()) {
                     $record = $translatableContentDriver->makeRecord($model, $data);
                 } else {
-                    $record = new $model();
+                    $record = new $model;
                     $record->fill($data);
                 }
 
