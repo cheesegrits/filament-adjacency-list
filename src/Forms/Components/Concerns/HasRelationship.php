@@ -61,7 +61,7 @@ trait HasRelationship
 
                     /* Update item order */
                     if ($orderColumn) {
-                        $record->{$orderColumn} = $pivotAttributes[$orderColumn] = array_search($itemKey, array_keys($siblings ?: $state));
+                        $record->{$orderColumn} = $pivotAttributes[$orderColumn] = array_search($itemKey, array_keys($siblings ?: $state)) + 1;
                     }
 
                     if ($relationship instanceof BelongsToMany) {
