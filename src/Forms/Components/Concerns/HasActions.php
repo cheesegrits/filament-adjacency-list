@@ -11,8 +11,6 @@ trait HasActions
 
     protected bool | Closure $isEditable = true;
 
-    protected bool | Closure $isClickable = true;
-
     protected bool | Closure $isDeletable = true;
 
     protected bool | Closure $isReorderable = true;
@@ -318,21 +316,5 @@ trait HasActions
         }
 
         return (bool) $this->evaluate($this->isMoveable);
-    }
-
-    public function clickable(bool | Closure $condition = true): static
-    {
-        $this->isClickable = $condition;
-
-        return $this;
-    }
-
-    public function isClickable(): bool
-    {
-        if ($this->isDisabled()) {
-            return false;
-        }
-
-        return (bool) $this->evaluate($this->isClickable);
     }
 }
