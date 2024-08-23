@@ -85,9 +85,9 @@
         x-show="! isCollapsed"
         x-collapse
         @class([
-            'fi-adjacency-list-items ms-5',
+            'fi-adjacency-list-items ms-5 pt-2',
             'pb-1' => !$hasChildren,
-            'border-l border-l-gray-100 dark:border-l-white/10 ps-5 pt-2' => $hasRulers,
+            'border-l border-l-gray-100 dark:border-l-white/10 ps-5' => $hasRulers,
         ])
         x-data="filamentAdjacencyList({
             treeId: @js($treeId),
