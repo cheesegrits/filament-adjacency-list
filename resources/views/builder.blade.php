@@ -11,7 +11,7 @@
 >
     @php
         $treeId = $getId();
-        
+
         $hasRulers = $hasRulers();
         $isAddable = $isAddable();
         $isCollapsible = $isCollapsible();
@@ -24,18 +24,18 @@
         $isReorderable = $isReorderable();
         
         $maxDepth = $getMaxDepth();
-        
+
         $addAction = $getAction('add');
         $itemActions = [$getAction('addChild'), $getAction('delete'), $getAction('edit'), $getAction('reorder'), $getAction('indent'), $getAction('dedent'), $getAction('moveUp'), $getAction('moveDown')];
     @endphp
 
     <div
+        x-ignore
         class="fi-adjacency-list-tree"
         data-sortable-container
         ax-load
-        ax-load-css="{{ \Filament\Support\Facades\FilamentAsset::getStyleHref('filament-adjacency-list-styles', 'saade/filament-adjacency-list') }}"
         ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-adjacency-list', 'saade/filament-adjacency-list') }}"
-        x-data="adjacencyList({
+        x-data="filamentAdjacencyList({
             treeId: @js($treeId),
             statePath: @js($getStatePath()),
             disabled: @js($isDisabled),
@@ -54,6 +54,8 @@
                 :descendable="$isMoveable && !$loop->last"
                 :disabled="$isDisabled"
                 :editable="$isEditable"
+                :get-item-action="$getItemAction"
+                :get-item-url="$getItemUrl"
                 :has-rulers="$hasRulers"
                 :indentable="$isIndentable && (!$loop->first && $loop->count > 1)"
                 :is-collapsed="$isCollapsed"
@@ -65,6 +67,7 @@
                 :label-key="$getLabelKey()"
                 :max-depth="$maxDepth"
                 :reorderable="$isReorderable"
+                :should-open-item-url-in-new-tab="$shouldOpenItemUrlInNewTab"
                 :state-path="$getStatePath()"
                 :tree-id="$treeId"
                 :uuid="$uuid"

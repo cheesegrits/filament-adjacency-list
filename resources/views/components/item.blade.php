@@ -1,23 +1,30 @@
-@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'hasRulers', 'indentable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'statePath', 'treeId', 'uuid'])
+@props(['actions', 'addable', 'ascendable', 'childrenKey', 'dedentable', 'deletable', 'descendable', 'disabled', 'editable', 'getItemAction', 'getItemUrl', 'hasRulers', 'indentable', 'isCollapsed', 'isCollapsible', 'isIndentable', 'isMoveable', 'item', 'itemStatePath', 'labelKey', 'maxDepth', 'reorderable', 'shouldOpenItemUrlInNewTab', 'statePath', 'treeId', 'uuid'])
 
 <div
     wire:key="{{ $itemStatePath }}"
     data-id="{{ $itemStatePath }}"
     data-sortable-item
     x-data="{ isCollapsed: @js($isCollapsed) }"
-    {{ $attributes->merge(['class' => 'rounded-lg']) }}
+    {{ $attributes->merge(['class' => 'rounded-lg mt-1.5']) }}
 >
     @php
         [$addChildAction, $deleteAction, $editAction, $reorderAction, $indentAction, $dedentAction, $moveUpAction, $moveDownAction] = $actions;
-        
+
         $hasChildren = count($item[$childrenKey] ?? []) > 0;
-        
+
         $hitDepthLimit = $maxDepth && substr_count($itemStatePath, $childrenKey) >= $maxDepth;
-        
-        $mountArgs = [
-            'statePath' => $itemStatePath,
-            'cachedRecordKey' => $uuid,
-        ];
+
+        $itemAction = $getItemAction($item);
+        $itemUrl = $getItemUrl($item);
+        $openItemUrlInNewTab = $shouldOpenItemUrlInNewTab($item);
+
+        $mountArgs = ['statePath' => $itemStatePath, 'cachedRecordKey' => $uuid];
+
+        $itemClasses = \Illuminate\Support\Arr::toCssClasses([
+            'flex-1 py-2 text-left rtl:text-right appearance-none',
+            'px-8' => !$isCollapsible || !$hasChildren,
+            'cursor-default' => ($itemAction && $itemUrl === null) && $disabled,
+        ])
     @endphp
 
     <div
@@ -40,19 +47,29 @@
                     @svg('heroicon-o-chevron-right', 'w-3.5 h-3.5 transition ease-in-out duration-200 rtl:rotate-180', ['x-bind:class' => "{'ltr:rotate-90 rtl:!rotate-90': !isCollapsed}"])
                 </button>
             @endif
-
-            <button
-                type="button"
-                @class([
-                    'flex-1 py-2 text-left rtl:text-right appearance-none',
-                    'px-4' => !$isCollapsible || !$hasChildren,
-                    'cursor-default' => $disabled || !$editable,
-                ])
-                @if ($editable)
-                wire:click="mountFormComponentAction(@js($statePath), 'edit', @js($mountArgs))"
-                @endif>
-                <span>{{ $item[$labelKey] }}</span>
-            </button>
+                
+            @if($itemUrl && $itemAction === null)
+                <a
+                    class="{{ $itemClasses }}"
+                    {{ \Filament\Support\generate_href_html($itemUrl, $openItemUrlInNewTab) }}
+                >
+                    <span>{{ $item[$labelKey] }}</span>
+                </a>
+            @elseif ($itemAction)
+                <button
+                    type="button"
+                    class="{{ $itemClasses }}"
+                    @if(!$disabled)
+                    wire:click="mountFormComponentAction(@js($statePath), @js($itemAction), @js($mountArgs))"
+                    @endif
+                >
+                    <span>{{ $item[$labelKey] }}</span>
+                </button>
+            @else
+                <div class="{{ $itemClasses }}">
+                    <span>{{ $item[$labelKey] }}</span>
+                </div>
+            @endif
         </div>
 
         <div class="items-center flex-shrink-0 hidden px-2 space-x-2 rtl:space-x-reverse group-hover:flex">
@@ -74,6 +91,9 @@
             @if ($deletable)
                 {{ $deleteAction($mountArgs) }}
             @endif
+            @if ($editable)
+                {{ $editAction($mountArgs) }}
+            @endif
         </div>
     </div>
 
@@ -82,11 +102,10 @@
         x-show="! isCollapsed"
         x-collapse
         @class([
-            'fi-adjacency-list-items ms-5',
-            'pb-1' => !$hasChildren,
-            'border-l border-l-gray-100 dark:border-l-white/10 ps-5 pt-2' => $hasRulers,
+            'fi-adjacency-list-items ms-5 mt-1.5',
+            'border-l border-l-gray-100 dark:border-l-white/10 ps-5' => $hasRulers,
         ])
-        x-data="adjacencyList({
+        x-data="filamentAdjacencyList({
             treeId: @js($treeId),
             statePath: @js($itemStatePath . ".$childrenKey"),
             disabled: @js($disabled),
@@ -108,6 +127,8 @@
                 :descendable="$isMoveable && !$loop->last"
                 :disabled="$disabled"
                 :editable="$editable"
+                :get-item-action="$getItemAction"
+                :get-item-url="$getItemUrl"
                 :has-rulers="$hasRulers"
                 :indentable="$isIndentable && (!$loop->first && $loop->count > 1)"
                 :is-collapsed="$isCollapsed"
@@ -119,6 +140,7 @@
                 :label-key="$labelKey"
                 :max-depth="$maxDepth"
                 :reorderable="$reorderable"
+                :should-open-item-url-in-new-tab="$shouldOpenItemUrlInNewTab"
                 :state-path="$statePath"
                 :tree-id="$treeId"
                 :uuid="$uuid"
