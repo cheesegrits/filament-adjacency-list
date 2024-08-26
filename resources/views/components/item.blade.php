@@ -5,7 +5,7 @@
     data-id="{{ $itemStatePath }}"
     data-sortable-item
     x-data="{ isCollapsed: @js($isCollapsed) }"
-    {{ $attributes->merge(['class' => 'rounded-lg']) }}
+    {{ $attributes->merge(['class' => 'rounded-lg mt-1.5']) }}
 >
     @php
         [$addChildAction, $deleteAction, $editAction, $reorderAction, $indentAction, $dedentAction, $moveUpAction, $moveDownAction] = $actions;
@@ -22,7 +22,7 @@
 
         $itemClasses = \Illuminate\Support\Arr::toCssClasses([
             'flex-1 py-2 text-left rtl:text-right appearance-none',
-            'px-4' => !$isCollapsible || !$hasChildren,
+            'px-8' => !$isCollapsible || !$hasChildren,
             'cursor-default' => ($itemAction && $itemUrl === null) && $disabled,
         ])
     @endphp
@@ -102,8 +102,7 @@
         x-show="! isCollapsed"
         x-collapse
         @class([
-            'fi-adjacency-list-items ms-5 pt-2',
-            'pb-1' => !$hasChildren,
+            'fi-adjacency-list-items ms-5 mt-1.5',
             'border-l border-l-gray-100 dark:border-l-white/10 ps-5' => $hasRulers,
         ])
         x-data="filamentAdjacencyList({
