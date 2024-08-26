@@ -2,11 +2,11 @@
 
 namespace Saade\FilamentAdjacencyList\Widgets;
 
-use Filament\Widgets;
-use Filament\Forms\Form;
-use Filament\Forms\Contracts\HasForms;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Widgets;
+use Illuminate\Database\Eloquent\Model;
 use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
 
 /**

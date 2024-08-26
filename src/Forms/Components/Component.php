@@ -8,15 +8,15 @@ use Saade\FilamentAdjacencyList\Forms\Components\Actions\Action;
 
 abstract class Component extends Forms\Components\Field
 {
-    use Concerns\HasActions;
-    use Concerns\HasForm;
     use Concerns\CanBeCollapsed;
-    use Concerns\HasRulers;
-    use Concerns\HasMaxDepth;
-    use Concerns\HasLabelKey;
+    use Concerns\HasActions;
     use Concerns\HasChildrenKey;
+    use Concerns\HasForm;
     use Concerns\HasItemAction;
     use Concerns\HasItemUrl;
+    use Concerns\HasLabelKey;
+    use Concerns\HasMaxDepth;
+    use Concerns\HasRulers;
 
     protected string $view = 'filament-adjacency-list::builder';
 
