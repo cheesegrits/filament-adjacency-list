@@ -60,7 +60,7 @@ class DedentAction extends Action
             try {
                 $record = $component->getRelatedModel() ? $component->getCachedExistingRecords()->get($arguments['cachedRecordKey']) : null;
 
-                return ! $record || \Filament\authorize('reorder', $record)->allowed();
+                return ! $record || \Filament\authorize('update', $record)->allowed();
             } catch (AuthorizationException $exception) {
                 return $exception->toResponse()->allowed();
             }
