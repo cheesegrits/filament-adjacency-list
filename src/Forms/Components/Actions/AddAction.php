@@ -75,7 +75,7 @@ class AddAction extends Action
 
         $this->authorize(function (Component $component): bool {
             try {
-                return \Filament\authorize('create', $component->getModel())->allowed();
+                return ! $component->getRelatedModel() || \Filament\authorize('create', $component->getModel())->allowed();
             } catch (AuthorizationException $exception) {
                 return $exception->toResponse()->allowed();
             }
